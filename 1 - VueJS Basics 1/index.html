@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3"></script>
+    <title>Document</title>
+    <style>
+        .box {
+            padding: 100px 0;
+            width: 400px;
+            text-align: center;
+            background: #ddd;
+            margin: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hello!</h1>
+
+    <div id="app">
+        <h2>{{ title }} - {{ author }}</h2>
+        <div v-if="show">
+            <h5>{{ age }}</h5>
+        </div>
+        <button @click="changeShow">Show age</button>
+        <button @click="changeTitle">Change Title</button>
+        <!-- Mouse Events -->
+        <hr>
+        <div class="box" @mouseover="handleEvent($event,'mouseOver')">mouseover (Mouse Over)</div>
+        <div class="box" @mouseleave="handleEvent($event,'mouseLeave')">mouseleave (Mouse Leave)</div>
+        <div class="box" @dblclick="handleEvent($event,'doubleClick')">dblclick (Double Click)</div>
+        <div class="box" @mousemove="handleMouseMove">Position | X : {{posX}} | Y : {{posY}}</div>
+        <!-- iteration (v-for) -->
+        <hr>
+        <div>
+            <h2 v-for="book in booksList">
+                <strong>{{book.title}} : </strong>
+                <small><a :href="book.link">Buy</a></small>
+            </h2>
+        </div>
+        <hr>
+        <div>
+            <strong> Computed VS Methods</strong>
+            <p @mouseover="getComputedDate"><strong>HOVER FOR Computed</strong></p>
+            <p @mouseover="getDate()"><strong>HOVER FOR Method</strong></p>
+
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
