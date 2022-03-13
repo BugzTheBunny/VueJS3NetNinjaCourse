@@ -1,0 +1,20 @@
+body{
+    margin: 0;
+}
+
+p{
+    font-style: italic;
+    color: white;
+}
+
+.backdrop{
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0rem 2rem;
+    border-radius: 25px;
+}
+
+.name{
+    color: white;
+    padding: 1rem;
+    font-size: 3rem;
+}
