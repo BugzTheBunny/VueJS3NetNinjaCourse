@@ -195,3 +195,120 @@ export default {
 But there might be a problem with this is that we don't always to to use this kind of search, for example we want to stop it on submit for example, or if we want to do something if the `search` is equal to something, and to make it work again only after the request of the submit is completed so we can use `watch()` and `watchEffect()`.
 
 [A GREAT EXPLAIN ABOUT COMPUTED VS WATCHERS](https://michaelnthiessen.com/difference-between-computed-property-and-watcher/)
+
+----
+Sending some Posts objects from Parent -> Children half of the video.
+
+----
+Fetching data in `setup()`.
+
+We use json-server and a temp db:  
+
+`npm install -g json-server`  
+creating a `data` folder with `db.json` inside with some posts.  
+`json-server --watch /data/db.json`
+
+Using `fetch` to get data from the "database".
+
+```
+<script>
+import {computed, ref, watch} from 'vue'
+import PostList from '../components/PostList.vue'
+export default {
+  name: 'Home',
+  components : {
+    PostList
+  },
+  setup() {
+    const posts = ref([])
+    const error = ref(null)
+
+    const load = async () => {
+      try {
+        let data = await fetch('http://localhost:3000/posts')
+        if (!data.ok) {
+          throw Error('No data vailable')
+        }else{
+          posts.value = await data.json()
+        }
+      }
+      catch(e){
+        error.value = e.message
+        console.log(error.value)
+      }
+
+    }
+    load()
+    
+    const showPosts = ref(true)
+
+    return {
+      posts,
+      showPosts,
+      error
+    }
+  },
+}
+</script>
+```
+----
+Using `Composables` (reusable functions)  
+We create `composables/getPosts.js` and take the code that we created and move it there with some minor changes.  
+```
+import { ref } from 'vue'
+
+const getPosts = () => {
+    const posts = ref([])
+    const error = ref(null)
+
+    const load = async () => {
+      try {
+        let data = await fetch('http://localhost:3000/posts')
+        if (!data.ok) {
+          throw Error('No data vailable')
+        }else{
+          posts.value = await data.json()
+        }
+      }
+      catch(e){
+        error.value = e.message
+        console.log(error.value)
+      }
+    }
+    
+    return { posts, error, load }
+}
+
+export default getPosts
+```
+
+`Home.vue` after removal and usage of `getPosts.js`:
+```
+...
+<script>
+import getPosts from '../composables/getPosts'
+import PostList from '../components/PostList.vue'
+import { ref } from 'vue'
+
+export default {
+  name: 'Home',
+  components : {
+    PostList
+  },
+  setup() {
+    const {posts, error, load} = getPosts()
+
+    load()
+
+    const showPosts = ref(true)
+
+    return {
+      posts,
+      error,
+      showPosts
+    }
+  },
+}
+</script>
+ 
+```
