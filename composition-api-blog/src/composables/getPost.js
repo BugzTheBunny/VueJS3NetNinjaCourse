@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 const getPost = (id) => {
-    const posts = ref(null)
+    const post = ref(null)
     const error = ref(null)
 
     const load = async () => {
@@ -10,7 +10,7 @@ const getPost = (id) => {
         if (!data.ok) {
           throw Error('No data available')
         }else{
-          posts.value = await data.json()
+          post.value = await data.json()
         }
       }
       catch(e){
@@ -19,7 +19,7 @@ const getPost = (id) => {
       }
     }
     
-    return { posts, error, load }
+    return { post, error, load }
 }
 
 export default getPost
